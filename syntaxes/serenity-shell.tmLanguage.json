@@ -1,0 +1,188 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"scopeName": "source.serenity-shell",
+	"name": "Shell (SerenityOS)",
+	"__comment": "Note that the names in this grammar specification follow the official Serenity names.",
+	"patterns": [
+		{
+			"include": "#comments"
+		},
+		{
+			"include": "#functions"
+		},
+		{
+			"include": "#variables"
+		},
+		{
+			"include": "#commands"
+		}
+	],
+	"repository": {
+		"comments": {
+			"name": "comment.line.hash.serenity-shell",
+			"match": "(#).*",
+			"captures": {
+				"1": {
+					"name": "punctuation.comment.begin.serenity-shell"
+				}
+			}
+		},
+		"commands": {
+			"name": "meta.name.command.serenity-shell",
+			"patterns": [
+				{
+					"include": "#keywords"
+				},
+				{
+					"include": "#pipes"
+				},
+				{
+					"include": "#strings"
+				},
+				{
+					"include": "#variables"
+				},
+				{
+					"include": "#heredocs"
+				}
+			]
+		},
+		"pipes": {
+			"name": "keyword.operator.pipe.serenity-shell",
+			"match": "\\|"
+		},
+		"strings": {
+			"patterns": [
+				{
+					"name": "string.quoted.double.serenity-shell",
+					"begin": "(\")",
+					"beginCaptures": {
+						"1": {
+							"name": "punctuation.string.beginning.serenity-shell"
+						}
+					},
+					"end": "(\")",
+					"endCaptures": {
+						"1": {
+							"name": "punctuation.string.end.serenity-shell"
+						}
+					},
+					"patterns": [
+						{
+							"include": "#interpolations"
+						},
+						{
+							"name": "constant.character.escape.serenity-shell",
+							"match": "\\\\."
+						}
+					]
+				},
+				{
+					"name": "string.quoted.single.serenity-shell",
+					"begin": "(')",
+					"beginCaptures": {
+						"1": {
+							"name": "punctuation.string.beginning.serenity-shell"
+						}
+					},
+					"end": "(')",
+					"endCaptures": {
+						"1": {
+							"name": "punctuation.string.end.serenity-shell"
+						}
+					},
+					"patterns": [
+						{
+							"name": "constant.character.escape.serenity-shell",
+							"match": "\\\\."
+						}
+					]
+				}
+			]
+		},
+		"interpolations": {
+			"patterns": [
+				{
+					"name": "meta.string.interpolation.serenity-shell",
+					"include": "#evaluates"
+				}
+			]
+		},
+		"evaluates": {
+			"patterns": [
+				{
+					"include": "#variables"
+				},
+				{
+					"begin": "(\\$\\()",
+					"beginCaptures": {
+						"1": {
+							"name": "punctuation.evaluate.begin.serenity-shell"
+						}
+					},
+					"endCaptures": {
+						"1": {
+							"name": "punctuation.evaluate.end.serenity-shell"
+						}
+					},
+					"end": "(\\))",
+					"patterns": [
+						{
+							"include": "#commands"
+						}
+					]
+				}
+			]
+		},
+		"functions": {
+			"name": "meta.function.serenity-shell"
+		},
+		"variables": {
+			"name": "meta.variable.other.serenity-shell",
+			"match": "(\\$)((\\w|[-_])+)",
+			"captures": {
+				"1": {
+					"name": "constant.language.dollar.serenity-shell"
+				},
+				"2": {
+					"name": "variable.other.serenity-shell"
+				}
+			}
+		},
+		"heredocs": {
+			"name": "string.unquoted.here-doc.serenity-shell",
+			"begin": "<<[-~]((\\w|[-_])+|('(\\w|[-_])+'))",
+			"end": "^(\\1)$",
+			"beginCaptures": {
+				"1": {
+					"name": "keyword.string.here-doc.serenity-shell"
+				}
+			},
+			"endCaptures": {
+				"1": {
+					"name": "keyword.string.here-doc.serenity-shell"
+				}
+			},
+			"patterns": [
+				{
+					"include": "#interpolations"
+				}
+			]
+		},
+		"redirections": {
+			"name": "meta.other.redirection.serenity-shell"
+		},
+		"keywords": {
+			"name": "keyword.command.serenity-shell",
+			"match": "(\\w|[-_])+"
+		},
+		"argument-list": {
+			"name": "meta.parameter.serenity-shell",
+			"begin": "(\\()",
+			"beginCaptures": {},
+			"end": "(\\))",
+			"endCaptures": {},
+			"patterns": []
+		}
+	}
+}

@@ -34,6 +34,16 @@
                     ".gml"
                 ],
                 "configuration": "./language-config-gml.json"
+            },            {
+                "id": "serenity-shell",
+                "aliases": [
+                    "Shell (SerenityOS)",
+                    "serenity-shell"
+                ],
+                "extensions": [
+                    ".sh"
+                ],
+                "configuration": "./language-config-shell.json"
             },
             {
                 "id": "serenity-ipc",
@@ -52,6 +62,10 @@
                 "language": "serenity-gml",
                 "scopeName": "source.serenity-gml",
                 "path": "./syntaxes/serenity-gml.tmLanguage.json"
+            },            {
+                "language": "serenity-shell",
+                "scopeName": "source.serenity-shell",
+                "path": "./syntaxes/serenity-shell.tmLanguage.json"
             },
             {
                 "language": "serenity-ipc",
