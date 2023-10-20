@@ -29,17 +29,27 @@
 				"6": { "name": "punctuation.brace.round.end.libjs.bytecode" }
 			},
 			"patterns": [ { "include": "#block" } ],
-			"end": "^$|(?=^JS::Bytecode::Executable)"
+			"end": "(?=^(JS::Bytecode::Executable|String Table|Identifier Table))"
 		},
 		"block": {
 			"name": "meta.block.$1.libjs.bytecode",
-			"begin": "^((?:merge|\\.|\\d+)+)(:)$",
+			"begin": "^ *((?:\\d+|break|continue|\\.)+)( (\\[) (?:(Handler)(:) (@(?:\\d+|break|continue|\\.)+))? ?(?:(Finalizer)(:) (@(?:\\d+|break|continue|\\.)+))? (\\]))?(:) *(//.*)?$",
 			"beginCaptures": {
 				"0": { "name": "meta.block.header.libjs.bytecode" },
 				"1": { "name": "entity.name.tag.label.libjs.bytecode" },
-				"2": { "name": "punctuation.colon.libjs.bytecode" }
+				"2": { "name": "meta.block.unwind_info.libjs.bytecode" },
+				"3": { "name": "punctuation.brace.square.begin.libjs.bytecode" },
+				"4": { "name": "entity.name.tag.libjs.bytecode" },
+				"5": { "name": "punctuation.colon.libjs.bytecode" },
+				"6": { "name": "variable.libjs.bytecode" },
+				"7": { "name": "entity.name.tag.libjs.bytecode" },
+				"8": { "name": "punctuation.colon.libjs.bytecode" },
+				"9": { "name": "variable.libjs.bytecode" },
+				"10": { "name": "punctuation.brace.square.end.libjs.bytecode" },
+				"11": { "name": "punctuation.colon.libjs.bytecode" },
+				"12": { "name": "comment.line.double-slash.libjs.bytecode" }
 			},
-			"while": "^\\[ *[0-9a-f]+\\] *.+$",
+			"while": "^$|^ *\\[ *[0-9a-f]+\\] *.+$",
 			"whileCaptures": {
 				"0": { "patterns": [ { "include": "#instruction-line" } ] }
 			}
@@ -49,7 +59,7 @@
 			"match": "((\\[) *([0-9a-f]+)(\\])) *(.+)",
 			"captures": {
 				"1": { "name": "meta.instruction.address.libjs.bytecode" },
-				"2": { "name": "punctuation.brace.square.open.libjs.bytecode" },
+				"2": { "name": "punctuation.brace.square.begin.libjs.bytecode" },
 				"3": { "name": "constant.numeric.libjs.bytecode" },
 				"4": { "name": "punctuation.brace.square.end.libjs.bytecode" },
 				"5": { "patterns": [ { "include": "#instruction" } ] }
@@ -59,6 +69,12 @@
 			"begin": "\\w+",
 			"beginCaptures": { "0": { "name": "entity.name.function.instruction.libjs.bytecode" } },
 			"patterns": [
+				{
+					"match" : "//.*$",
+					"captures": {
+						"0": {"name": "comment.line.double-slash.libjs.bytecode"} 
+					}
+				},
 				{
 					"match": "(?<= )(?:(\\w+)(:))?((?:\\(?\"(?:[^\\\\]|\\\\.)*\"\\)?)?|\\S*)(?= |$)",
 					"captures": {
@@ -88,7 +104,7 @@
 			"patterns": [
 				{
 					"name": "meta.value.label.libjs.bytecode",
-					"match": "(@)((?:merge|\\.|\\d+)+)",
+					"match": "(@)((?:\\d+|break|continue|\\.)+)",
 					"captures": {
 						"0": { "name": "variable.libjs.bytecode" }
 					}
